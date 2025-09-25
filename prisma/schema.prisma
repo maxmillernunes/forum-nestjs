@@ -14,7 +14,7 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(ulid())
+  id        String     @id @default(uuid())
   name      String
   email     String     @unique
   password  String
@@ -24,7 +24,7 @@ model User {
 }
 
 model Question {
-  id        String    @id @default(ulid())
+  id        String    @id @default(uuid())
   title     String
   slug      String    @unique
   content   String
