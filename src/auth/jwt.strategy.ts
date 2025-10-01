@@ -23,7 +23,7 @@ export class JWTStrategy extends PassportStrategy(Strategy) {
     })
   }
 
-  async validate(payload: UserPayload) {
+  validate(payload: UserPayload) {
     return tokenPayloadSchema.parse(payload)
   }
 }

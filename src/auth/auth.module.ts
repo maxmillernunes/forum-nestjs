@@ -11,7 +11,7 @@ import { JWTStrategy } from './jwt.strategy'
     JwtModule.registerAsync({
       inject: [ConfigService],
       global: true,
-      async useFactory(config: ConfigService<Env, true>) {
+      useFactory(config: ConfigService<Env, true>) {
         const privateKey = config.get('JWT_PRIVATE_KEY', { infer: true })
         const publicKey = config.get('JWT_PUBLIC_KEY', { infer: true })
 

@@ -1,4 +1,3 @@
-// @ts-check
 import eslint from '@eslint/js'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
@@ -25,8 +24,10 @@ export default [
   {
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-floating-promises': 'warn',
-      '@typescript-eslint/no-unsafe-argument': 'warn',
+      '@typescript-eslint/no-floating-promises': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
+      '@typescript-eslint/require-await': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'warn',
 
       // --- Style ---
       semi: ['error', 'never'],
