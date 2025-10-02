@@ -1,7 +1,8 @@
 import { left, right, type Either } from '@/core/either'
 import type { Question } from '../../enterprise/entities/question'
-import type { QuestionsRepository } from '../repositories/questions-repository'
+import { QuestionsRepository } from '../repositories/questions-repository'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+import { Injectable } from '@nestjs/common'
 
 interface FetchRecentQuestionsRequest {
   page: number
@@ -14,6 +15,7 @@ type FetchRecentQuestionsResponse = Either<
   }
 >
 
+@Injectable()
 export class FetchRecentQuestionsUseCase {
   constructor(private questionsRepository: QuestionsRepository) {}
 
