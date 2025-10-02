@@ -1,11 +1,11 @@
 import type { StudentsRepository } from '@/domain/forum/application/repositories/student-repository'
 import type { Student } from '@/domain/forum/enterprise/entities/student'
 
-export class InMemoryStudentRepository implements StudentsRepository {
-  public itens: Student[] = []
+export class InMemoryStudentsRepository implements StudentsRepository {
+  public items: Student[] = []
 
   async findByEmail(email: string) {
-    const student = this.itens.find((student) => student.email === email)
+    const student = this.items.find((student) => student.email === email)
 
     if (!student) {
       return null
@@ -15,6 +15,6 @@ export class InMemoryStudentRepository implements StudentsRepository {
   }
 
   async create(student: Student) {
-    this.itens.push(student)
+    this.items.push(student)
   }
 }

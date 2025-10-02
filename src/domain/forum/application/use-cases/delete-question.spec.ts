@@ -15,7 +15,7 @@ describe('Delete question', () => {
     inMemoryQuestionAttachmentsRepository =
       new InMemoryQuestionAttachmentsRepository()
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
-      inMemoryQuestionAttachmentsRepository,
+      inMemoryQuestionAttachmentsRepository
     )
 
     sut = new DeleteQuestionUseCase(inMemoryQuestionsRepository)
@@ -24,11 +24,11 @@ describe('Delete question', () => {
   it('should be able to delete a question', async () => {
     const newQuestion = makeQuestion(
       { authorId: new UniqueEntityId('author-id') },
-      new UniqueEntityId('question-id'),
+      new UniqueEntityId('question-id')
     )
 
     await inMemoryQuestionsRepository.create(newQuestion)
-    inMemoryQuestionAttachmentsRepository.itens.push(
+    inMemoryQuestionAttachmentsRepository.items.push(
       makeQuestionAttachment({
         questionId: newQuestion.id,
         attachmentId: new UniqueEntityId('1'),
@@ -36,19 +36,19 @@ describe('Delete question', () => {
       makeQuestionAttachment({
         questionId: newQuestion.id,
         attachmentId: new UniqueEntityId('2'),
-      }),
+      })
     )
 
     await sut.execute({ authorId: 'author-id', questionId: 'question-id' })
 
-    expect(inMemoryQuestionsRepository.itens).toHaveLength(0)
-    expect(inMemoryQuestionAttachmentsRepository.itens).toHaveLength(0)
+    expect(inMemoryQuestionsRepository.items).toHaveLength(0)
+    expect(inMemoryQuestionAttachmentsRepository.items).toHaveLength(0)
   })
 
   it('should not be able to delete a question from another user', async () => {
     const newQuestion = makeQuestion(
       { authorId: new UniqueEntityId('author-id') },
-      new UniqueEntityId('question-id'),
+      new UniqueEntityId('question-id')
     )
 
     await inMemoryQuestionsRepository.create(newQuestion)

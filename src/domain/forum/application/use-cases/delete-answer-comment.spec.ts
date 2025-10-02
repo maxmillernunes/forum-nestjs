@@ -23,7 +23,7 @@ describe('Delete Answer Comment', () => {
       answerCommentId: answerComment.id.toString(),
     })
 
-    expect(inMemoryAnswerCommentsRepository.itens).toHaveLength(0)
+    expect(inMemoryAnswerCommentsRepository.items).toHaveLength(0)
   })
 
   it('should not be able to delete a answer comment from another user', async () => {

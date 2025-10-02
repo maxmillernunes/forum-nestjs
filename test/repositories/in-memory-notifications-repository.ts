@@ -2,12 +2,12 @@ import type { NotificationsRepository } from '@/domain/notification/application/
 import type { Notification } from '@/domain/notification/enterprise/entities/notification'
 
 export class InMemoryNotificationsRepository
-implements NotificationsRepository
+  implements NotificationsRepository
 {
-  public itens: Notification[] = []
+  public items: Notification[] = []
 
   async findById(id: string) {
-    const notification = this.itens.find((item) => item.id.toString() === id)
+    const notification = this.items.find((item) => item.id.toString() === id)
 
     if (!notification) {
       return null
@@ -17,14 +17,14 @@ implements NotificationsRepository
   }
 
   async create(notification: Notification) {
-    this.itens.push(notification)
+    this.items.push(notification)
   }
 
   async save(notification: Notification) {
-    const itemIndex = this.itens.findIndex(
-      (item) => item.id === notification.id,
+    const itemIndex = this.items.findIndex(
+      (item) => item.id === notification.id
     )
 
-    this.itens[itemIndex] = notification
+    this.items[itemIndex] = notification
   }
 }

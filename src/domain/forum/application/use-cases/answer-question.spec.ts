@@ -12,7 +12,7 @@ describe('Create Questions', () => {
     inMemoryAnswerAttachmentsRepository =
       new InMemoryAnswerAttachmentsRepository()
     inMemoryAnswersRepository = new InMemoryAnswersRepository(
-      inMemoryAnswerAttachmentsRepository,
+      inMemoryAnswerAttachmentsRepository
     )
 
     sut = new AnswerQuestionUseCase(inMemoryAnswersRepository)
@@ -29,13 +29,13 @@ describe('Create Questions', () => {
     expect(result.isRight()).toBe(true)
     expect(result.value?.answer.id).toBeTruthy()
     expect(
-      inMemoryAnswersRepository.itens[0].attachments.currentItems,
+      inMemoryAnswersRepository.items[0].attachments.currentItems
     ).toHaveLength(2)
-    expect(inMemoryAnswersRepository.itens[0].attachments.currentItems).toEqual(
+    expect(inMemoryAnswersRepository.items[0].attachments.currentItems).toEqual(
       [
         expect.objectContaining({ attachmentId: new UniqueEntityId('1') }),
         expect.objectContaining({ attachmentId: new UniqueEntityId('2') }),
-      ],
+      ]
     )
   })
 })

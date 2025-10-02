@@ -25,8 +25,8 @@ describe('Read Notification', () => {
     })
 
     expect(result.isRight()).toBe(true)
-    expect(inMemoryNotificationsRepository.itens[0].readAt).toEqual(
-      expect.any(Date),
+    expect(inMemoryNotificationsRepository.items[0].readAt).toEqual(
+      expect.any(Date)
     )
   })
 

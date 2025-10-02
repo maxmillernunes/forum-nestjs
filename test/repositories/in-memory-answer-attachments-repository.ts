@@ -2,23 +2,23 @@ import type { AnswerAttachmentsRepository } from '@/domain/forum/application/rep
 import type { AnswerAttachment } from '@/domain/forum/enterprise/entities/answer-attachment'
 
 export class InMemoryAnswerAttachmentsRepository
-implements AnswerAttachmentsRepository
+  implements AnswerAttachmentsRepository
 {
-  public itens: AnswerAttachment[] = []
+  public items: AnswerAttachment[] = []
 
   async findManyByAnswerId(answerId: string) {
-    const answerAttachments = this.itens.filter(
-      (item) => item.answerId.toString() === answerId,
+    const answerAttachments = this.items.filter(
+      (item) => item.answerId.toString() === answerId
     )
 
     return answerAttachments
   }
 
   async deleteManyByAnswerId(answerId: string) {
-    const answerAttachments = this.itens.filter(
-      (item) => item.answerId.toString() !== answerId,
+    const answerAttachments = this.items.filter(
+      (item) => item.answerId.toString() !== answerId
     )
 
-    this.itens = answerAttachments
+    this.items = answerAttachments
   }
 }

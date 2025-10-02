@@ -2,23 +2,23 @@ import type { QuestionAttachmentsRepository } from '@/domain/forum/application/r
 import type { QuestionAttachment } from '@/domain/forum/enterprise/entities/question-attachment'
 
 export class InMemoryQuestionAttachmentsRepository
-implements QuestionAttachmentsRepository
+  implements QuestionAttachmentsRepository
 {
-  public itens: QuestionAttachment[] = []
+  public items: QuestionAttachment[] = []
 
   async findManyByQuestionId(questionId: string) {
-    const questionAttachments = this.itens.filter(
-      (item) => item.questionId.toString() === questionId,
+    const questionAttachments = this.items.filter(
+      (item) => item.questionId.toString() === questionId
     )
 
     return questionAttachments
   }
 
   async deleteManyByQuestionId(questionId: string) {
-    const questionAttachments = this.itens.filter(
-      (item) => item.questionId.toString() !== questionId,
+    const questionAttachments = this.items.filter(
+      (item) => item.questionId.toString() !== questionId
     )
 
-    this.itens = questionAttachments
+    this.items = questionAttachments
   }
 }

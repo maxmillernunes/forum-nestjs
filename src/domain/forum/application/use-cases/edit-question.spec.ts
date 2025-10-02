@@ -15,24 +15,24 @@ describe('Edit Question', () => {
     inMemoryQuestionAttachmentsRepository =
       new InMemoryQuestionAttachmentsRepository()
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
-      inMemoryQuestionAttachmentsRepository,
+      inMemoryQuestionAttachmentsRepository
     )
 
     sut = new EditQuestionUseCase(
       inMemoryQuestionsRepository,
-      inMemoryQuestionAttachmentsRepository,
+      inMemoryQuestionAttachmentsRepository
     )
   })
 
   it('should be able a edit question', async () => {
     const newQuestion = makeQuestion(
       { authorId: new UniqueEntityId('author-id') },
-      new UniqueEntityId('question-id'),
+      new UniqueEntityId('question-id')
     )
 
     await inMemoryQuestionsRepository.create(newQuestion)
 
-    inMemoryQuestionAttachmentsRepository.itens.push(
+    inMemoryQuestionAttachmentsRepository.items.push(
       makeQuestionAttachment({
         questionId: newQuestion.id,
         attachmentId: new UniqueEntityId('1'),
@@ -40,7 +40,7 @@ describe('Edit Question', () => {
       makeQuestionAttachment({
         questionId: newQuestion.id,
         attachmentId: new UniqueEntityId('2'),
-      }),
+      })
     )
 
     await sut.execute({
@@ -51,15 +51,15 @@ describe('Edit Question', () => {
       attachmentIds: ['1', '3'],
     })
 
-    expect(inMemoryQuestionsRepository.itens[0]).toMatchObject({
+    expect(inMemoryQuestionsRepository.items[0]).toMatchObject({
       content: 'new content',
       title: 'new title',
     })
     expect(
-      inMemoryQuestionsRepository.itens[0].attachments.currentItems,
+      inMemoryQuestionsRepository.items[0].attachments.currentItems
     ).toHaveLength(2)
     expect(
-      inMemoryQuestionsRepository.itens[0].attachments.currentItems,
+      inMemoryQuestionsRepository.items[0].attachments.currentItems
     ).toEqual([
       expect.objectContaining({ attachmentId: new UniqueEntityId('1') }),
       expect.objectContaining({ attachmentId: new UniqueEntityId('3') }),
@@ -69,7 +69,7 @@ describe('Edit Question', () => {
   it('should not be able to edit a question from another user', async () => {
     const newQuestion = makeQuestion(
       { authorId: new UniqueEntityId('author-id') },
-      new UniqueEntityId('question-id'),
+      new UniqueEntityId('question-id')
     )
 
     await inMemoryQuestionsRepository.create(newQuestion)

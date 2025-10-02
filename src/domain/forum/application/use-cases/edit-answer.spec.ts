@@ -15,22 +15,22 @@ describe('Edit Answer', () => {
     inMemoryAnswerAttachmentsRepository =
       new InMemoryAnswerAttachmentsRepository()
     inMemoryAnswersRepository = new InMemoryAnswersRepository(
-      inMemoryAnswerAttachmentsRepository,
+      inMemoryAnswerAttachmentsRepository
     )
     sut = new EditAnswerUseCase(
       inMemoryAnswersRepository,
-      inMemoryAnswerAttachmentsRepository,
+      inMemoryAnswerAttachmentsRepository
     )
   })
 
   it('should be able a edit answer', async () => {
     const newAnswer = makeAnswer(
       { authorId: new UniqueEntityId('author-id') },
-      new UniqueEntityId('answer-id'),
+      new UniqueEntityId('answer-id')
     )
 
     await inMemoryAnswersRepository.create(newAnswer)
-    inMemoryAnswerAttachmentsRepository.itens.push(
+    inMemoryAnswerAttachmentsRepository.items.push(
       makeAnswerAttachment({
         answerId: newAnswer.id,
         attachmentId: new UniqueEntityId('1'),
@@ -38,7 +38,7 @@ describe('Edit Answer', () => {
       makeAnswerAttachment({
         answerId: newAnswer.id,
         attachmentId: new UniqueEntityId('2'),
-      }),
+      })
     )
 
     await sut.execute({
@@ -48,24 +48,24 @@ describe('Edit Answer', () => {
       attachmentIds: ['1', '3'],
     })
 
-    expect(inMemoryAnswersRepository.itens[0]).toMatchObject({
+    expect(inMemoryAnswersRepository.items[0]).toMatchObject({
       content: 'new content',
     })
     expect(
-      inMemoryAnswersRepository.itens[0].attachments.currentItems,
+      inMemoryAnswersRepository.items[0].attachments.currentItems
     ).toHaveLength(2)
-    expect(inMemoryAnswersRepository.itens[0].attachments.currentItems).toEqual(
+    expect(inMemoryAnswersRepository.items[0].attachments.currentItems).toEqual(
       [
         expect.objectContaining({ attachmentId: new UniqueEntityId('1') }),
         expect.objectContaining({ attachmentId: new UniqueEntityId('3') }),
-      ],
+      ]
     )
   })
 
   it('should not be able to edit a answer from another user', async () => {
     const newAnswer = makeAnswer(
       { authorId: new UniqueEntityId('author-id') },
-      new UniqueEntityId('answer-id'),
+      new UniqueEntityId('answer-id')
     )
 
     await inMemoryAnswersRepository.create(newAnswer)

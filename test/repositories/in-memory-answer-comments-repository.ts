@@ -4,12 +4,12 @@ import type { AnswerCommentsRepository } from '@/domain/forum/application/reposi
 import type { AnswerComment } from '@/domain/forum/enterprise/entities/answer-comment'
 
 export class InMemoryAnswerCommentsRepository
-implements AnswerCommentsRepository
+  implements AnswerCommentsRepository
 {
-  public itens: AnswerComment[] = []
+  public items: AnswerComment[] = []
 
   async findById(id: string) {
-    const answerComment = this.itens.find((item) => item.id.toString() === id)
+    const answerComment = this.items.find((item) => item.id.toString() === id)
 
     if (!answerComment) {
       return null
@@ -19,7 +19,7 @@ implements AnswerCommentsRepository
   }
 
   async findManyByAnswerId(answerId: string, { page }: PaginationParams) {
-    const answerComments = this.itens
+    const answerComments = this.items
       .filter((item) => item.answerId.toString() === answerId)
       .slice((page - 1) * 20, page * 20)
 
@@ -27,16 +27,16 @@ implements AnswerCommentsRepository
   }
 
   async create(answerComment: AnswerComment) {
-    this.itens.push(answerComment)
+    this.items.push(answerComment)
 
     DomainEvents.dispatchEventsForAggregate(answerComment.id)
   }
 
   async delete(answerComment: AnswerComment) {
-    const answerCommentIndex = this.itens.findIndex(
-      (item) => item.id === answerComment.id,
+    const answerCommentIndex = this.items.findIndex(
+      (item) => item.id === answerComment.id
     )
 
-    this.itens.splice(answerCommentIndex, 1)
+    this.items.splice(answerCommentIndex, 1)
   }
 }

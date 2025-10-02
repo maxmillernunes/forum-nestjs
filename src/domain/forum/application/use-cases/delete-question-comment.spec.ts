@@ -24,7 +24,7 @@ describe('Delete Question Comment', () => {
       questionCommentId: questionComment.id.toString(),
     })
 
-    expect(inMemoryQuestionCommentsRepository.itens).toHaveLength(0)
+    expect(inMemoryQuestionCommentsRepository.items).toHaveLength(0)
   })
 
   it('should not be able to delete a question comment from another user', async () => {

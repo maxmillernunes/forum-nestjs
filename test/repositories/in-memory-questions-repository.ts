@@ -5,15 +5,15 @@ import type { QuestionsRepository } from '@/domain/forum/application/repositorie
 import type { Question } from '@/domain/forum/enterprise/entities/question'
 
 export class InMemoryQuestionsRepository implements QuestionsRepository {
-  public itens: Question[] = []
+  public items: Question[] = []
 
   constructor(
-    private questionAttachmentsRepository: QuestionAttachmentsRepository,
+    private questionAttachmentsRepository: QuestionAttachmentsRepository
   ) {}
 
   async findById(questionId: string) {
-    const question = this.itens.find(
-      (item) => item.id.toString() === questionId,
+    const question = this.items.find(
+      (item) => item.id.toString() === questionId
     )
 
     if (!question) {
@@ -24,7 +24,7 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
   }
 
   async findBySlug(slug: string) {
-    const question = this.itens.find((item) => item.slug.value === slug)
+    const question = this.items.find((item) => item.slug.value === slug)
 
     if (!question) {
       return null
@@ -34,7 +34,7 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
   }
 
   async findManyRecent({ page }: PaginationParams) {
-    const question = this.itens
+    const question = this.items
       .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
       .slice((page - 1) * 20, page * 20)
 
@@ -42,30 +42,30 @@ export class InMemoryQuestionsRepository implements QuestionsRepository {
   }
 
   async create(question: Question) {
-    this.itens.push(question)
+    this.items.push(question)
 
     DomainEvents.dispatchEventsForAggregate(question.id)
   }
 
   async save(question: Question) {
-    const questionIndex = this.itens.findIndex(
-      (item) => item.id === question.id,
+    const questionIndex = this.items.findIndex(
+      (item) => item.id === question.id
     )
 
-    this.itens[questionIndex] = question
+    this.items[questionIndex] = question
 
     DomainEvents.dispatchEventsForAggregate(question.id)
   }
 
   async delete(question: Question) {
-    const questionIndex = this.itens.findIndex(
-      (item) => item.id === question.id,
+    const questionIndex = this.items.findIndex(
+      (item) => item.id === question.id
     )
 
-    this.itens.splice(questionIndex, 1)
+    this.items.splice(questionIndex, 1)
 
     await this.questionAttachmentsRepository.deleteManyByQuestionId(
-      question.id.toString(),
+      question.id.toString()
     )
   }
 }
