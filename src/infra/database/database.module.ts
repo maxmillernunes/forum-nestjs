@@ -33,10 +33,8 @@ import { QuestionsRepository } from '@/domain/forum/application/repositories/que
     PrismaAnswersRepository,
     PrismaQuestionAttachmentsRepository,
     PrismaQuestionCommentsRepository,
-    {
-      provide: QuestionsRepository,
-      useClass: PrismaQuestionsRepository,
-    },
+
+    QuestionsRepository,
   ],
 })
 export class DatabaseModule {}
