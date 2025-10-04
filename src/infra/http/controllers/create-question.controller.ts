@@ -2,15 +2,16 @@ import z from 'zod'
 import {
   BadRequestException,
   Body,
+  ConflictException,
   Controller,
   Post,
-  UseGuards,
 } from '@nestjs/common'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { JwtAuthGuard } from '@/infra/auth/jwt-auth-guard'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import type { UserPayload } from '@/infra/auth/jwt.strategy'
 import { CreateQuestionUseCase } from '@/domain/forum/application/use-cases/create-question'
+import { SlugAlreadyExistsError } from '@/domain/forum/application/use-cases/errors/slug-already-exists-error'
 
 const createQuestionBodySchema = z.object({
   title: z.string(),
@@ -21,7 +22,6 @@ const bodyValidationPipe = new ZodValidationPipe(createQuestionBodySchema)
 
 type CreateQuestionBodySchema = z.infer<typeof createQuestionBodySchema>
 
-@UseGuards(JwtAuthGuard)
 @Controller('/questions')
 export class CreateQuestionController {
   constructor(private createQuestion: CreateQuestionUseCase) {}
@@ -42,7 +42,15 @@ export class CreateQuestionController {
     })
 
     if (result.isLeft()) {
-      throw new BadRequestException()
+      const error = result.value
+
+      switch (error.constructor) {
+        case SlugAlreadyExistsError:
+          throw new ConflictException(error.message)
+
+        default:
+          throw new BadRequestException(error.message)
+      }
     }
   }
 }

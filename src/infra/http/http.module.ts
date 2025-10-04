@@ -19,13 +19,11 @@ import { CryptographyModule } from '../cryptography/cryptography.module'
     FetchRecentQuestionsController,
   ],
   providers: [
-    /**
-     * use cases
-     */
+    // Questions use cases
     CreateQuestionUseCase,
     FetchRecentQuestionsUseCase,
 
-    //Students
+    // Students use cases
     RegisterStudentUseCase,
     AuthenticateStudentUseCase,
   ],

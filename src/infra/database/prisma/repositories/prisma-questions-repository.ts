@@ -23,7 +23,7 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
 
   async findBySlug(slug: string): Promise<Question | null> {
     const question = await this.prisma.question.findUnique({
-      where: { id: slug },
+      where: { slug },
     })
 
     if (!question) {
