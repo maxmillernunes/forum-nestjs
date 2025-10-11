@@ -4,10 +4,13 @@ import {
   AnswerComment,
   type AnswerCommentProps,
 } from '@/domain/forum/enterprise/entities/answer-comment'
+import { Injectable } from '@nestjs/common'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { PrismaAnswerCommentsMapper } from '@/infra/database/prisma/mappers/prisma-answer-comment-mapper'
 
 export function makeAnswerComment(
   override: Partial<AnswerCommentProps> = {},
-  id?: UniqueEntityId,
+  id?: UniqueEntityId
 ) {
   const answerComment = AnswerComment.create(
     {
@@ -16,8 +19,25 @@ export function makeAnswerComment(
       content: faker.lorem.text(),
       ...override,
     },
-    id,
+    id
   )
 
   return answerComment
+}
+
+@Injectable()
+export class AnswerCommentFactory {
+  constructor(private prisma: PrismaService) {}
+
+  async makePrismaAnswerComment(
+    data: Partial<AnswerCommentProps> = {}
+  ): Promise<AnswerComment> {
+    const answerComment = makeAnswerComment(data)
+
+    await this.prisma.comment.create({
+      data: PrismaAnswerCommentsMapper.toPrisma(answerComment),
+    })
+
+    return answerComment
+  }
 }

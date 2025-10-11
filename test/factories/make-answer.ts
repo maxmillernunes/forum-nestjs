@@ -4,10 +4,13 @@ import {
   Answer,
   type AnswerProps,
 } from '@/domain/forum/enterprise/entities/answer'
+import { Injectable } from '@nestjs/common'
+import { PrismaService } from '@/infra/database/prisma/prisma.service'
+import { PrismaAnswersMapper } from '@/infra/database/prisma/mappers/prisma-answer-mapper'
 
 export function makeAnswer(
   override: Partial<AnswerProps> = {},
-  id?: UniqueEntityId,
+  id?: UniqueEntityId
 ) {
   const answer = Answer.create(
     {
@@ -16,8 +19,23 @@ export function makeAnswer(
       content: faker.lorem.text(),
       ...override,
     },
-    id,
+    id
   )
 
   return answer
+}
+
+@Injectable()
+export class AnswerFactory {
+  constructor(private prisma: PrismaService) {}
+
+  async makePrismaAnswer(data: Partial<AnswerProps> = {}): Promise<Answer> {
+    const answer = makeAnswer(data)
+
+    await this.prisma.answer.create({
+      data: PrismaAnswersMapper.toPrisma(answer),
+    })
+
+    return answer
+  }
 }
