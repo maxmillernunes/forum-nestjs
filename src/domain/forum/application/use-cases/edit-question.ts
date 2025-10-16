@@ -1,12 +1,13 @@
 import { left, right, type Either } from '@/core/either'
 import type { Question } from '../../enterprise/entities/question'
-import type { QuestionsRepository } from '../repositories/questions-repository'
+import { QuestionsRepository } from '../repositories/questions-repository'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import type { QuestionAttachmentsRepository } from '../repositories/question-attachments-repository'
+import { QuestionAttachmentsRepository } from '../repositories/question-attachments-repository'
 import { QuestionAttachmentList } from '../../enterprise/entities/question-attachment-list'
 import { QuestionAttachment } from '../../enterprise/entities/question-attachment'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
+import { Injectable } from '@nestjs/common'
 
 interface EditQuestionRequest {
   questionId: string
@@ -23,10 +24,11 @@ type EditQuestionResponse = Either<
   }
 >
 
+@Injectable()
 export class EditQuestionUseCase {
   constructor(
     private questionsRepository: QuestionsRepository,
-    private questionAttachmentsRepository: QuestionAttachmentsRepository,
+    private questionAttachmentsRepository: QuestionAttachmentsRepository
   ) {}
 
   async execute({
@@ -56,7 +58,7 @@ export class EditQuestionUseCase {
      * Create a current item from attachment watched list
      */
     const questionAttachmentList = new QuestionAttachmentList(
-      currentQuestionAttachments,
+      currentQuestionAttachments
     )
 
     /**
