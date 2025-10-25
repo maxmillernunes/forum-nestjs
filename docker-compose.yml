@@ -1,13 +1,40 @@
 services:
+  api:
+    container_name: nest-clean-api
+    build: .
+    ports:
+      - ${PORT}:${PORT}
+    env_file:
+      - .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - app-nest-clean
+
   postgres:
     container_name: nest-clean-pg
-    image: bitnami/postgresql
+    image: postgres:16-alpine
+    restart: unless-stopped
+    env_file:
+      - .env
     ports:
-      - 5432:5432
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: docker
-      POSTGRES_DB: nest-clean
-      PGDATA: /data/postgres
+      - ${POSTGRES_PORT}:${POSTGRES_PORT}
     volumes:
-      - ./data/pg:/data/postgres
+      - pg_data:/var/lib/postgresql/data
+      - ./init-app-user.sh:/docker-entrypoint-initdb.d/init-app-user.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - app-nest-clean
+
+volumes:
+  pg_data:
+
+networks:
+  app-nest-clean:
+    driver: bridge

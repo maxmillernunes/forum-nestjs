@@ -29,6 +29,9 @@ Este é um fórum desenvolvido com **Node.js** e **NestJS**, seguindo os princí
 - **Eventos de Domínio**: Reações a mudanças importantes (ex: notificação ao criar resposta)
 
 ## Como Executar
+- API disponível em `http://localhost:3333`.
+
+### Localmente sem docker
 
 1. Instale as dependências:
   ```bash
@@ -39,19 +42,33 @@ Este é um fórum desenvolvido com **Node.js** e **NestJS**, seguindo os princí
   ```bash
   pnpm prisma migrate dev
   ```
-4. Inicie o servidor:
+4. Subir um docker com o postgres na sua maquina e alterar as envs.
+5. Inicie o servidor:
   ```bash
   pnpm start
   pnpm start:dev
   ```
 
+### Localmente com o docker
+
+1. Dê permissão de execução ao seguinte arquivo.
+```bash
+chmod +x init-app-user.sh
+```
+2. execute o seguinte comando:
+```bash
+docker compose up --build -d
+```
+
 ## Executar Testes
 
-Os testes Unitários (Unit)
+- Caso esteja executando via `docker`, altera a seguinte env  `POSTGRES_HOST=postgres` para `POSTGRES_HOST=localhost`.
+
+- Os testes Unitários (Unit)
   ```bash
   pnpm test
   ```
-Os teste de Integração (E2E)
+- Os teste de Integração (E2E)
   ```bash
   pnpm test:watch
   ```
@@ -190,6 +207,9 @@ This is a forum built with **Node.js** and **NestJS**, following **Domain-Driven
 - **Domain Events**: React to important changes (e.g., notification when an answer is created)
 
 ## How to Run
+- API available on `http://localhost:3333`.
+
+### Locally without docker
 
 1. Install dependencies:
   ```bash
@@ -200,11 +220,23 @@ This is a forum built with **Node.js** and **NestJS**, following **Domain-Driven
   ```bash
   pnpm prisma migrate dev
   ```
-4. Start the server:
+4. Create a container postgres with docker and change the env variables.
+5. Start the server:
   ```bash
   pnpm start
   pnpm start:dev
   ```
+
+### Locally with docker
+
+1. Give the execution permission from this file.
+```bash
+chmod +x init-app-user.sh
+```
+2. Execute this command.
+```bash
+docker compose up --build -d
+```
 
 ## Run Tests
 
