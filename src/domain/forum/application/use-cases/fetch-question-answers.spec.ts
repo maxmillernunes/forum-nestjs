@@ -1,43 +1,43 @@
 import { InMemoryAnswersRepository } from 'test/repositories/in-memory-answers-repository'
-import { FetchQuestionsAnswersUseCase } from './fetch-question-answers'
+import { FetchQuestionAnswersUseCase } from './fetch-question-answers'
 import { makeAnswer } from 'test/factories/make-answer'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import { InMemoryAnswerAttachmentsRepository } from 'test/repositories/in-memory-answer-attachments-repository'
 
 let inMemoryAnswerAttachmentsRepository: InMemoryAnswerAttachmentsRepository
 let inMemoryAnswersRepository: InMemoryAnswersRepository
-let sut: FetchQuestionsAnswersUseCase
+let sut: FetchQuestionAnswersUseCase
 
 describe('Fetch Question Answers', () => {
   beforeEach(() => {
     inMemoryAnswerAttachmentsRepository =
       new InMemoryAnswerAttachmentsRepository()
     inMemoryAnswersRepository = new InMemoryAnswersRepository(
-      inMemoryAnswerAttachmentsRepository,
+      inMemoryAnswerAttachmentsRepository
     )
-    sut = new FetchQuestionsAnswersUseCase(inMemoryAnswersRepository)
+    sut = new FetchQuestionAnswersUseCase(inMemoryAnswersRepository)
   })
 
   it('should be able to fetch question answers', async () => {
     await inMemoryAnswersRepository.create(
       makeAnswer({
         questionId: new UniqueEntityId('question-id'),
-      }),
+      })
     )
     await inMemoryAnswersRepository.create(
       makeAnswer({
         questionId: new UniqueEntityId('question-id'),
-      }),
+      })
     )
     await inMemoryAnswersRepository.create(
       makeAnswer({
         questionId: new UniqueEntityId('question-id'),
-      }),
+      })
     )
     await inMemoryAnswersRepository.create(
       makeAnswer({
         questionId: new UniqueEntityId('question-id'),
-      }),
+      })
     )
 
     const result = await sut.execute({
@@ -54,7 +54,7 @@ describe('Fetch Question Answers', () => {
       await inMemoryAnswersRepository.create(
         makeAnswer({
           questionId: new UniqueEntityId('question-id-paginated'),
-        }),
+        })
       )
     }
 
