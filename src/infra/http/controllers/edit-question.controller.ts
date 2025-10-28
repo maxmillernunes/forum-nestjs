@@ -47,18 +47,7 @@ export class EditQuestionController {
     })
 
     if (result.isLeft()) {
-      const error = result.value
-
-      switch (error.constructor) {
-        case ResourceNotFoundError:
-          throw new NotFoundException(error.message)
-
-        case NotAllowedError:
-          throw new UnauthorizedException(error.message)
-
-        default:
-          break
-      }
+      throw new UnauthorizedException()
     }
   }
 }

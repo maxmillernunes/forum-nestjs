@@ -29,17 +29,7 @@ export class DeleteQuestionController {
     })
 
     if (result.isLeft()) {
-      const error = result.value
-
-      switch (error.constructor) {
-        case NotAllowedError:
-          throw new UnauthorizedException()
-          break
-
-        default:
-          throw new BadRequestException()
-          break
-      }
+      throw new BadRequestException()
     }
   }
 }
