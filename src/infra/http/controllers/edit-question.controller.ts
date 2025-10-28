@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  HttpCode,
   NotFoundException,
   Param,
   Put,
@@ -28,6 +29,7 @@ export class EditQuestionController {
   constructor(private editQuestion: EditQuestionUseCase) {}
 
   @Put()
+  @HttpCode(204)
   async handle(
     @Param('id') questionId: string,
     @Body(bodyValidationPipe) body: EditQuestionBodySchema,
