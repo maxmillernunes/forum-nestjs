@@ -1,7 +1,8 @@
 import { left, right, type Either } from '@/core/either'
-import type { QuestionCommentsRepository } from '../repositories/question-comments-repository'
+import { QuestionCommentsRepository } from '../repositories/question-comments-repository'
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
+import { Injectable } from '@nestjs/common'
 
 interface DeleteQuestionCommentRequest {
   authorId: string
@@ -13,6 +14,7 @@ type DeleteQuestionCommentResponse = Either<
   null
 >
 
+@Injectable()
 export class DeleteQuestionCommentUseCase {
   constructor(private questionCommentsRepository: QuestionCommentsRepository) {}
 
@@ -21,7 +23,7 @@ export class DeleteQuestionCommentUseCase {
     questionCommentId,
   }: DeleteQuestionCommentRequest): Promise<DeleteQuestionCommentResponse> {
     const questionComment = await this.questionCommentsRepository.findById(
-      questionCommentId,
+      questionCommentId
     )
 
     if (!questionComment) {

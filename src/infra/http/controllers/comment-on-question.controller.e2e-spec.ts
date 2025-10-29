@@ -8,7 +8,7 @@ import { DatabaseModule } from '@/infra/database/database.module'
 import { StudentFactory } from 'test/factories/make-student'
 import { QuestionFactory } from 'test/factories/make-question'
 
-describe('Answer questions (E2E)', () => {
+describe('Comment on question (E2E)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService
@@ -30,7 +30,7 @@ describe('Answer questions (E2E)', () => {
     await app.init()
   })
 
-  test('[POST] /questions/:questionId/answers', async () => {
+  test('[POST] /questions/:questionId/comments', async () => {
     const user = await studentFactory.makePrismaStudent()
 
     const token = jwt.sign({ sub: user.id.toString() })
@@ -42,20 +42,20 @@ describe('Answer questions (E2E)', () => {
     const questionId = question.id.toString()
 
     const response = await request(app.getHttpServer())
-      .post(`/questions/${questionId}/answers`)
+      .post(`/questions/${questionId}/comments`)
       .set('Authorization', `Bearer ${token}`)
       .send({
-        content: 'Example answer content',
+        content: 'Example question comment',
       })
 
     expect(response.status).toBe(201)
 
-    const answerOnDatabase = await prisma.answer.findFirst({
+    const commentOnDatabase = await prisma.comment.findFirst({
       where: {
-        content: 'Example answer content',
+        content: 'Example question comment',
       },
     })
 
-    expect(answerOnDatabase).toBeTruthy()
+    expect(commentOnDatabase).toBeTruthy()
   })
 })
