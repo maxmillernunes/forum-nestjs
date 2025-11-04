@@ -23,17 +23,24 @@ export function makeQuestionAttachment(
   return questionAttachment
 }
 
-// @Injectable()
-// export class QuestionAttachmentFactory {
-//   constructor(private prisma: PrismaService) {}
+@Injectable()
+export class QuestionAttachmentFactory {
+  constructor(private prisma: PrismaService) {}
 
-//   async makeQuestionComment(
-//     data: Partial<QuestionAttachmentProps> = {}
-//   ): Promise<QuestionAttachment> {
-//     const questionAttachment = makeQuestionAttachment(data)
+  async makePrismaQuestionAttachment(
+    data: Partial<QuestionAttachmentProps> = {}
+  ): Promise<QuestionAttachment> {
+    const questionAttachment = makeQuestionAttachment(data)
 
-//     await this.prisma.attachment.create({ data: {} })
+    await this.prisma.attachment.update({
+      where: {
+        id: questionAttachment.attachmentId.toString(),
+      },
+      data: {
+        questionId: questionAttachment.questionId.toString(),
+      },
+    })
 
-//     return questionAttachment
-//   }
-// }
+    return questionAttachment
+  }
+}

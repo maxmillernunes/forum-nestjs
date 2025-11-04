@@ -18,6 +18,7 @@ import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 const editQuestionBodySchema = z.object({
   title: z.string(),
   content: z.string(),
+  attachments: z.array(z.uuid()),
 })
 
 const bodyValidationPipe = new ZodValidationPipe(editQuestionBodySchema)
@@ -36,12 +37,12 @@ export class EditQuestionController {
     @CurrentUser() user: UserPayload
   ) {
     const userId = user.sub
-    const { content, title } = body
+    const { content, title, attachments } = body
 
     const result = await this.editQuestion.execute({
       questionId,
       authorId: userId,
-      attachmentIds: [],
+      attachmentIds: attachments,
       content,
       title,
     })

@@ -62,6 +62,40 @@ describe('Edit Answer', () => {
     )
   })
 
+  it('should sync new and removed attachment when editing a answer', async () => {
+    const newAnswer = makeAnswer(
+      { authorId: new UniqueEntityId('author-id') },
+      new UniqueEntityId('answer-id')
+    )
+
+    await inMemoryAnswersRepository.create(newAnswer)
+    inMemoryAnswerAttachmentsRepository.items.push(
+      makeAnswerAttachment({
+        answerId: newAnswer.id,
+        attachmentId: new UniqueEntityId('1'),
+      }),
+      makeAnswerAttachment({
+        answerId: newAnswer.id,
+        attachmentId: new UniqueEntityId('2'),
+      })
+    )
+
+    await sut.execute({
+      authorId: 'author-id',
+      answerId: 'answer-id',
+      content: 'new content',
+      attachmentIds: ['1', '3'],
+    })
+
+    expect(inMemoryAnswerAttachmentsRepository.items).toHaveLength(2)
+    expect(inMemoryAnswerAttachmentsRepository.items).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ attachmentId: new UniqueEntityId('1') }),
+        expect.objectContaining({ attachmentId: new UniqueEntityId('3') }),
+      ])
+    )
+  })
+
   it('should not be able to edit a answer from another user', async () => {
     const newAnswer = makeAnswer(
       { authorId: new UniqueEntityId('author-id') },
