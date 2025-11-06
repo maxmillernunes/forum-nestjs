@@ -4,6 +4,8 @@ import type { PaginationParams } from '@/core/repositories/pagination-params'
 import type { AnswerComment } from '@/domain/forum/enterprise/entities/answer-comment'
 import { PrismaService } from '../prisma.service'
 import { PrismaAnswerCommentsMapper } from '../mappers/prisma-answer-comment-mapper'
+import type { CommentWithAuthor } from '@/domain/forum/enterprise/entities/value-objects/comment-with-author'
+import { PrismaCommentsWithAuthorMapper } from '../mappers/prisma-comment-with-author-mapper'
 
 @Injectable()
 export class PrismaAnswerCommentsRepository
@@ -27,12 +29,36 @@ export class PrismaAnswerCommentsRepository
   ): Promise<AnswerComment[]> {
     const comments = await this.prisma.comment.findMany({
       where: { answerId },
+      orderBy: {
+        createdAt: 'desc',
+      },
       take: 20,
       skip: (page - 1) * 20,
     })
 
     return comments.map((comment) =>
       PrismaAnswerCommentsMapper.toDomain(comment)
+    )
+  }
+
+  async findManyByAnswerIdWithAuthor(
+    answerId: string,
+    { page }: PaginationParams
+  ): Promise<CommentWithAuthor[]> {
+    const comments = await this.prisma.comment.findMany({
+      where: { answerId },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      include: {
+        author: true,
+      },
+      take: 20,
+      skip: (page - 1) * 20,
+    })
+
+    return comments.map((comment) =>
+      PrismaCommentsWithAuthorMapper.toDomain(comment)
     )
   }
 

@@ -6,7 +6,6 @@ import { JwtService } from '@nestjs/jwt'
 import { StudentFactory } from 'test/factories/make-student'
 import { QuestionFactory } from 'test/factories/make-question'
 import { DatabaseModule } from '@/infra/database/database.module'
-import { QuestionCommentFactory } from 'test/factories/make-question-comment'
 import { AnswerFactory } from 'test/factories/make-answer'
 import { AnswerCommentFactory } from 'test/factories/make-answer-comment'
 
@@ -40,7 +39,9 @@ describe('Fetch answer comments (E2E)', () => {
   })
 
   test('[GET] /questions/:questionId/comments', async () => {
-    const user = await studentFactory.makePrismaStudent()
+    const user = await studentFactory.makePrismaStudent({
+      name: 'John Doe',
+    })
 
     const question = await questionFactory.makePrismaQuestion({
       title: 'Example question title 1',
@@ -79,9 +80,17 @@ describe('Fetch answer comments (E2E)', () => {
       comments: expect.arrayContaining([
         expect.objectContaining({
           content: 'Example comment content 1',
+          author: expect.objectContaining({
+            name: 'John Doe',
+            id: expect.anything(),
+          }),
         }),
         expect.objectContaining({
           content: 'Example comment content 2',
+          author: expect.objectContaining({
+            name: 'John Doe',
+            id: expect.anything(),
+          }),
         }),
       ]),
     })
