@@ -17,7 +17,7 @@ export class PrismaQuestionsMapper {
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
       },
-      new UniqueEntityId(raw.id)
+      new UniqueEntityId(raw.id),
     )
   }
 

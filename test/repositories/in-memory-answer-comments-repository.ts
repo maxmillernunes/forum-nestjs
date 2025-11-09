@@ -6,7 +6,7 @@ import { CommentWithAuthor } from '@/domain/forum/enterprise/entities/value-obje
 import { InMemoryStudentsRepository } from './in-memory-students-repository'
 
 export class InMemoryAnswerCommentsRepository
-  implements AnswerCommentsRepository
+implements AnswerCommentsRepository
 {
   public items: AnswerComment[] = []
 
@@ -32,19 +32,19 @@ export class InMemoryAnswerCommentsRepository
 
   async findManyByAnswerIdWithAuthor(
     answerId: string,
-    { page }: PaginationParams
+    { page }: PaginationParams,
   ) {
     const AnswerComments = this.items
       .filter((item) => item.answerId.toString() === answerId)
       .slice((page - 1) * 20, page * 20)
       .map((comment) => {
         const author = this.studentsRepository.items.find((student) =>
-          student.id.equals(comment.authorId)
+          student.id.equals(comment.authorId),
         )
 
         if (!author) {
           throw new Error(
-            `Author with "${comment.authorId.toString()}" does not exists`
+            `Author with "${comment.authorId.toString()}" does not exists`,
           )
         }
 
@@ -70,7 +70,7 @@ export class InMemoryAnswerCommentsRepository
 
   async delete(answerComment: AnswerComment) {
     const answerCommentIndex = this.items.findIndex(
-      (item) => item.id === answerComment.id
+      (item) => item.id === answerComment.id,
     )
 
     this.items.splice(answerCommentIndex, 1)

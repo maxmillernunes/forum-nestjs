@@ -22,7 +22,7 @@ type CommentOnQuestionResponse = Either<
 export class CommentOnQuestionUseCase {
   constructor(
     private questionsRepository: QuestionsRepository,
-    private questionCommentsRepository: QuestionCommentsRepository
+    private questionCommentsRepository: QuestionCommentsRepository,
   ) {}
 
   async execute({

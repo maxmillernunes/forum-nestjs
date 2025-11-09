@@ -2,7 +2,7 @@ import type { QuestionAttachmentsRepository } from '@/domain/forum/application/r
 import type { QuestionAttachment } from '@/domain/forum/enterprise/entities/question-attachment'
 
 export class InMemoryQuestionAttachmentsRepository
-  implements QuestionAttachmentsRepository
+implements QuestionAttachmentsRepository
 {
   public items: QuestionAttachment[] = []
 
@@ -20,7 +20,7 @@ export class InMemoryQuestionAttachmentsRepository
 
   async findManyByQuestionId(questionId: string) {
     const questionAttachments = this.items.filter(
-      (item) => item.questionId.toString() === questionId
+      (item) => item.questionId.toString() === questionId,
     )
 
     return questionAttachments
@@ -28,7 +28,7 @@ export class InMemoryQuestionAttachmentsRepository
 
   async deleteManyByQuestionId(questionId: string) {
     const questionAttachments = this.items.filter(
-      (item) => item.questionId.toString() !== questionId
+      (item) => item.questionId.toString() !== questionId,
     )
 
     this.items = questionAttachments

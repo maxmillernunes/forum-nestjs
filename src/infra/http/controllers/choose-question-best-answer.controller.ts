@@ -12,14 +12,14 @@ import type { UserPayload } from '@/infra/auth/jwt.strategy'
 @Controller('/answers/:answerId/choose-as-best')
 export class ChooseQuestionBestAnswerController {
   constructor(
-    private chooseQuestionBestAnswer: ChooseQuestionBestAnswerUseCase
+    private chooseQuestionBestAnswer: ChooseQuestionBestAnswerUseCase,
   ) {}
 
   @Patch()
   @HttpCode(204)
   async handle(
     @Param('answerId') answerId: string,
-    @CurrentUser() user: UserPayload
+    @CurrentUser() user: UserPayload,
   ) {
     const userId = user.sub
 

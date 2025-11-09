@@ -26,7 +26,7 @@ export class PrismaAnswerAttachmentsRepository
     }
 
     const attachmentIds = attachments.map((attachment) =>
-      attachment.id.toString()
+      attachment.id.toString(),
     )
 
     await this.prisma.attachment.deleteMany({
@@ -44,7 +44,7 @@ export class PrismaAnswerAttachmentsRepository
     })
 
     return answerAttachments.map((answerAttachment) =>
-      PrismaAnswerAttachmentsMapper.toDomain(answerAttachment)
+      PrismaAnswerAttachmentsMapper.toDomain(answerAttachment),
     )
   }
 

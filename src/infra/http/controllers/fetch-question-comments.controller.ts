@@ -28,7 +28,7 @@ export class FetchQuestionCommentsController {
   @Get()
   async handle(
     @Param('questionId') questionId: string,
-    @Query('page', QueryValidationPipe) page: PageQueryParamSchema
+    @Query('page', QueryValidationPipe) page: PageQueryParamSchema,
   ) {
     const result = await this.fetchQuestionComment.execute({
       questionId,
@@ -42,7 +42,9 @@ export class FetchQuestionCommentsController {
     const questionComments = result.value.comments
 
     return {
-      comments: questionComments.map(CommentWithAuthorPresenter.toHTTP),
+      comments: questionComments.map((comment) =>
+        CommentWithAuthorPresenter.toHTTP(comment),
+      ),
     }
   }
 }

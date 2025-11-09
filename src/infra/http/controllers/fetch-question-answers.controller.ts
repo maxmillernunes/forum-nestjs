@@ -28,7 +28,7 @@ export class FetchQuestionAnswersController {
   @Get()
   async handle(
     @Param('questionId') questionId: string,
-    @Query('page', QueryValidationPipe) page: PageQueryParamSchema
+    @Query('page', QueryValidationPipe) page: PageQueryParamSchema,
   ) {
     const result = await this.fetchQuestionAnswers.execute({
       questionId,
@@ -41,6 +41,6 @@ export class FetchQuestionAnswersController {
 
     const answers = result.value.answers
 
-    return { answers: answers.map(AnswerPresenter.toHTTP) }
+    return { answers: answers.map((answer) => AnswerPresenter.toHTTP(answer)) }
   }
 }

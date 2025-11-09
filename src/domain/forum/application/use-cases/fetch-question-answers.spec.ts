@@ -13,7 +13,7 @@ describe('Fetch Question Answers', () => {
     inMemoryAnswerAttachmentsRepository =
       new InMemoryAnswerAttachmentsRepository()
     inMemoryAnswersRepository = new InMemoryAnswersRepository(
-      inMemoryAnswerAttachmentsRepository
+      inMemoryAnswerAttachmentsRepository,
     )
     sut = new FetchQuestionAnswersUseCase(inMemoryAnswersRepository)
   })
@@ -22,22 +22,22 @@ describe('Fetch Question Answers', () => {
     await inMemoryAnswersRepository.create(
       makeAnswer({
         questionId: new UniqueEntityId('question-id'),
-      })
+      }),
     )
     await inMemoryAnswersRepository.create(
       makeAnswer({
         questionId: new UniqueEntityId('question-id'),
-      })
+      }),
     )
     await inMemoryAnswersRepository.create(
       makeAnswer({
         questionId: new UniqueEntityId('question-id'),
-      })
+      }),
     )
     await inMemoryAnswersRepository.create(
       makeAnswer({
         questionId: new UniqueEntityId('question-id'),
-      })
+      }),
     )
 
     const result = await sut.execute({
@@ -54,7 +54,7 @@ describe('Fetch Question Answers', () => {
       await inMemoryAnswersRepository.create(
         makeAnswer({
           questionId: new UniqueEntityId('question-id-paginated'),
-        })
+        }),
       )
     }
 

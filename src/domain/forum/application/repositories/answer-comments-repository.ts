@@ -6,12 +6,12 @@ export abstract class AnswerCommentsRepository {
   abstract findById(id: string): Promise<AnswerComment | null>
   abstract findManyByAnswerId(
     answerId: string,
-    params: PaginationParams
+    params: PaginationParams,
   ): Promise<AnswerComment[]>
 
   abstract findManyByAnswerIdWithAuthor(
     questionId: string,
-    params: PaginationParams
+    params: PaginationParams,
   ): Promise<CommentWithAuthor[]>
 
   abstract create(answerComment: AnswerComment): Promise<void>

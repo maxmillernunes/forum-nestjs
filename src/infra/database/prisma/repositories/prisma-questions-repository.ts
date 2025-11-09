@@ -5,12 +5,14 @@ import type { Question } from '@/domain/forum/enterprise/entities/question'
 import { PrismaService } from '../prisma.service'
 import { PrismaQuestionsMapper } from '../mappers/prisma-question-mapper'
 import { QuestionAttachmentsRepository } from '@/domain/forum/application/repositories/question-attachments-repository'
+import type { QuestionDetails } from '@/domain/forum/enterprise/entities/value-objects/question-details'
+import { PrismaQuestionDetailsMapper } from '../mappers/prisma-question-details-mapper'
 
 @Injectable()
 export class PrismaQuestionsRepository implements QuestionsRepository {
   constructor(
     private prisma: PrismaService,
-    private questionAttachmentsRepository: QuestionAttachmentsRepository
+    private questionAttachmentsRepository: QuestionAttachmentsRepository,
   ) {}
 
   async findById(questionId: string): Promise<Question | null> {
@@ -37,6 +39,22 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
     return PrismaQuestionsMapper.toDomain(question)
   }
 
+  async findDetailsBySlug(slug: string): Promise<QuestionDetails | null> {
+    const question = await this.prisma.question.findUnique({
+      where: { slug },
+      include: {
+        author: true,
+        attachments: true,
+      },
+    })
+
+    if (!question) {
+      return null
+    }
+
+    return PrismaQuestionDetailsMapper.toDomain(question)
+  }
+
   async findManyRecent({ page }: PaginationParams): Promise<Question[]> {
     const questions = await this.prisma.question.findMany({
       orderBy: { createdAt: 'desc' },
@@ -55,7 +73,7 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
     })
 
     await this.questionAttachmentsRepository.createMany(
-      question.attachments.getItems()
+      question.attachments.getItems(),
     )
   }
 
@@ -68,10 +86,10 @@ export class PrismaQuestionsRepository implements QuestionsRepository {
         data,
       }),
       this.questionAttachmentsRepository.createMany(
-        question.attachments.getNewItems()
+        question.attachments.getNewItems(),
       ),
       this.questionAttachmentsRepository.deleteMany(
-        question.attachments.getRemovedItems()
+        question.attachments.getRemovedItems(),
       ),
     ])
   }

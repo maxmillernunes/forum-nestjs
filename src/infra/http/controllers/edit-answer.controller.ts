@@ -1,4 +1,3 @@
-import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 import { EditAnswerUseCase } from '@/domain/forum/application/use-cases/edit-answer'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import type { UserPayload } from '@/infra/auth/jwt.strategy'
@@ -9,7 +8,6 @@ import {
   HttpCode,
   Param,
   Put,
-  UnauthorizedException,
 } from '@nestjs/common'
 import z from 'zod'
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
@@ -32,7 +30,7 @@ export class EditAnswerController {
   async handle(
     @Param('id') answerId: string,
     @Body(bodyValidationPipe) body: EditAnswerBodySchema,
-    @CurrentUser() user: UserPayload
+    @CurrentUser() user: UserPayload,
   ) {
     const { content, attachments } = body
     const userId = user.sub

@@ -28,7 +28,7 @@ export class FetchAnswerCommentsUseCase {
         answerId,
         {
           page,
-        }
+        },
       )
 
     return right({

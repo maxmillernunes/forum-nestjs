@@ -2,7 +2,7 @@ import type { AnswerAttachmentsRepository } from '@/domain/forum/application/rep
 import type { AnswerAttachment } from '@/domain/forum/enterprise/entities/answer-attachment'
 
 export class InMemoryAnswerAttachmentsRepository
-  implements AnswerAttachmentsRepository
+implements AnswerAttachmentsRepository
 {
   public items: AnswerAttachment[] = []
 
@@ -20,7 +20,7 @@ export class InMemoryAnswerAttachmentsRepository
 
   async findManyByAnswerId(answerId: string) {
     const answerAttachments = this.items.filter(
-      (item) => item.answerId.toString() === answerId
+      (item) => item.answerId.toString() === answerId,
     )
 
     return answerAttachments
@@ -28,7 +28,7 @@ export class InMemoryAnswerAttachmentsRepository
 
   async deleteManyByAnswerId(answerId: string) {
     const answerAttachments = this.items.filter(
-      (item) => item.answerId.toString() !== answerId
+      (item) => item.answerId.toString() !== answerId,
     )
 
     this.items = answerAttachments

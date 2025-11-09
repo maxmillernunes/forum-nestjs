@@ -20,7 +20,7 @@ describe('Send Notification', () => {
 
     expect(result.isRight()).toBe(true)
     expect(inMemoryNotificationsRepository.items[0]).toEqual(
-      result.value?.notification
+      result.value?.notification,
     )
     expect(inMemoryNotificationsRepository.items).toHaveLength(1)
   })

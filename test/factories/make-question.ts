@@ -10,7 +10,7 @@ import { PrismaQuestionsMapper } from '@/infra/database/prisma/mappers/prisma-qu
 
 export function makeQuestion(
   override: Partial<QuestionProps> = {},
-  id?: UniqueEntityId
+  id?: UniqueEntityId,
 ) {
   const question = Question.create(
     {
@@ -19,7 +19,7 @@ export function makeQuestion(
       content: faker.lorem.text(),
       ...override,
     },
-    id
+    id,
   )
 
   return question
@@ -30,7 +30,7 @@ export class QuestionFactory {
   constructor(private prisma: PrismaService) {}
 
   async makePrismaQuestion(
-    data: Partial<QuestionProps> = {}
+    data: Partial<QuestionProps> = {},
   ): Promise<Question> {
     const question = makeQuestion(data)
 

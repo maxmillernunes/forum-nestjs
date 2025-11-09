@@ -16,12 +16,12 @@ export class PrismaAnswerCommentsMapper {
         createdAt: raw.createdAt,
         updatedAt: raw.updatedAt,
       },
-      new UniqueEntityId(raw.id)
+      new UniqueEntityId(raw.id),
     )
   }
 
   static toPrisma(
-    answerComment: AnswerComment
+    answerComment: AnswerComment,
   ): Prisma.CommentUncheckedCreateInput {
     return {
       id: answerComment.id.toString(),

@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker'
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import {
   AnswerComment,
-  type AnswerCommentProps,
+  type AnswerCommentProps
 } from '@/domain/forum/enterprise/entities/answer-comment'
 import { Injectable } from '@nestjs/common'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
@@ -17,7 +17,7 @@ export function makeAnswerComment(
       authorId: new UniqueEntityId(),
       answerId: new UniqueEntityId(),
       content: faker.lorem.text(),
-      ...override,
+      ...override
     },
     id
   )
@@ -35,7 +35,7 @@ export class AnswerCommentFactory {
     const answerComment = makeAnswerComment(data)
 
     await this.prisma.comment.create({
-      data: PrismaAnswerCommentsMapper.toPrisma(answerComment),
+      data: PrismaAnswerCommentsMapper.toPrisma(answerComment)
     })
 
     return answerComment

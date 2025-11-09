@@ -1,7 +1,7 @@
 import { UniqueEntityId } from '@/core/entities/unique-entity-id'
 import {
   AnswerAttachment,
-  type AnswerAttachmentProps,
+  type AnswerAttachmentProps
 } from '@/domain/forum/enterprise/entities/answer-attachment'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { Injectable } from '@nestjs/common'
@@ -14,7 +14,7 @@ export function makeAnswerAttachment(
     {
       answerId: new UniqueEntityId(),
       attachmentId: new UniqueEntityId(),
-      ...override,
+      ...override
     },
     id
   )
@@ -33,11 +33,11 @@ export class AnswerAttachmentFactory {
 
     await this.prisma.attachment.update({
       where: {
-        id: answerAttachment.attachmentId.toString(),
+        id: answerAttachment.attachmentId.toString()
       },
       data: {
-        answerId: answerAttachment.answerId.toString(),
-      },
+        answerId: answerAttachment.answerId.toString()
+      }
     })
 
     return answerAttachment

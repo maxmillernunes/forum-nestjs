@@ -12,7 +12,11 @@ import {
 import { OnCommentOnQuestion } from './on-comment-on-question'
 import { makeQuestionComment } from 'test/factories/make-question-comment'
 import { waitFor } from 'test/utils/wait-for'
+import { InMemoryStudentsRepository } from 'test/repositories/in-memory-students-repository'
+import { InMemoryAttachmentsRepository } from 'test/repositories/in-memory-attachments-repository'
 
+let inMemoryAttachmentsRepository: InMemoryAttachmentsRepository
+let inMemoryStudentsRepository: InMemoryStudentsRepository
 let inMemoryQuestionCommentsRepository: InMemoryQuestionCommentsRepository
 let inMemoryQuestionAttachmentsRepository: InMemoryQuestionAttachmentsRepository
 let inMemoryQuestionsRepository: InMemoryQuestionsRepository
@@ -28,15 +32,19 @@ let sendNotificationExecuteSpy: MockInstance<
 
 describe('On Comment On Question', () => {
   beforeEach(() => {
+    inMemoryAttachmentsRepository = new InMemoryAttachmentsRepository()
+    inMemoryStudentsRepository = new InMemoryStudentsRepository()
     // Comment Question Repository
-    inMemoryQuestionCommentsRepository =
-      new InMemoryQuestionCommentsRepository()
-
+    inMemoryQuestionCommentsRepository = new InMemoryQuestionCommentsRepository(
+      inMemoryStudentsRepository,
+    )
     // Questions Repository
     inMemoryQuestionAttachmentsRepository =
       new InMemoryQuestionAttachmentsRepository()
     inMemoryQuestionsRepository = new InMemoryQuestionsRepository(
       inMemoryQuestionAttachmentsRepository,
+      inMemoryAttachmentsRepository,
+      inMemoryStudentsRepository,
     )
 
     // Notification repository and Send Notification UseCase
@@ -55,7 +63,7 @@ describe('On Comment On Question', () => {
     )
   })
 
-  it('', async () => {
+  it('should  send a notification when an comment on question is created', async () => {
     const question = makeQuestion()
 
     await inMemoryQuestionsRepository.create(question)

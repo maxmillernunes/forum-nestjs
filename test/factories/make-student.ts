@@ -10,7 +10,7 @@ import { PrismaStudentMapper } from '@/infra/database/prisma/mappers/prisma-stud
 
 export function makeStudent(
   override: Partial<StudentProps> = {},
-  id?: UniqueEntityId
+  id?: UniqueEntityId,
 ) {
   const student = Student.create(
     {
@@ -19,7 +19,7 @@ export function makeStudent(
       password: faker.internet.password(),
       ...override,
     },
-    id
+    id,
   )
 
   return student

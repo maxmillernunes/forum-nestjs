@@ -13,7 +13,7 @@ describe('Fetch Answer Comments', () => {
   beforeEach(() => {
     inMemoryStudentsRepository = new InMemoryStudentsRepository()
     inMemoryAnswerCommentsRepository = new InMemoryAnswerCommentsRepository(
-      inMemoryStudentsRepository
+      inMemoryStudentsRepository,
     )
     sut = new FetchAnswerCommentsUseCase(inMemoryAnswerCommentsRepository)
   })
@@ -69,7 +69,7 @@ describe('Fetch Answer Comments', () => {
             name: 'John Doe',
           }),
         }),
-      ])
+      ]),
     )
   })
 
@@ -85,7 +85,7 @@ describe('Fetch Answer Comments', () => {
         makeAnswerComment({
           answerId: new UniqueEntityId('answer-id-paginated'),
           authorId: student.id,
-        })
+        }),
       )
     }
 

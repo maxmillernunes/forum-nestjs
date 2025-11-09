@@ -14,21 +14,21 @@ export class QuestionComment extends Comment<QuestionCommentProps> {
 
   static create(
     props: Optional<QuestionCommentProps, 'createdAt'>,
-    id?: UniqueEntityId
+    id?: UniqueEntityId,
   ) {
     const questionComment = new QuestionComment(
       {
         ...props,
         createdAt: props.createdAt ?? new Date(),
       },
-      id
+      id,
     )
 
     const isNewCommentAnswer = !id
 
     if (isNewCommentAnswer) {
       questionComment.addDomainEvent(
-        new CommentOnQuestionEvent(questionComment)
+        new CommentOnQuestionEvent(questionComment),
       )
     }
 

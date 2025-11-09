@@ -30,7 +30,7 @@ export class AnswerQuestionController {
   async handle(
     @Param('questionId') questionId: string,
     @Body(bodyValidationPipe) body: AnswerQuestionBodySchema,
-    @CurrentUser() user: UserPayload
+    @CurrentUser() user: UserPayload,
   ) {
     const { content, attachments } = body
     const userId = user.sub

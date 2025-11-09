@@ -1,5 +1,4 @@
 import { BadRequestException, Controller, Get, Query } from '@nestjs/common'
-import { JwtAuthGuard } from '@/infra/auth/jwt-auth-guard'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import z from 'zod'
 import { FetchRecentQuestionsUseCase } from '@/domain/forum/application/use-cases/fetch-recent-questions'
@@ -30,6 +29,10 @@ export class FetchRecentQuestionsController {
 
     const questions = result.value.questions
 
-    return { questions: questions.map(QuestionPresenter.toHTTP) }
+    return {
+      questions: questions.map((question) =>
+        QuestionPresenter.toHTTP(question),
+      ),
+    }
   }
 }

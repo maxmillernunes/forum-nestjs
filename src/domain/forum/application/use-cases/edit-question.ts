@@ -28,7 +28,7 @@ type EditQuestionResponse = Either<
 export class EditQuestionUseCase {
   constructor(
     private questionsRepository: QuestionsRepository,
-    private questionAttachmentsRepository: QuestionAttachmentsRepository
+    private questionAttachmentsRepository: QuestionAttachmentsRepository,
   ) {}
 
   async execute({
@@ -58,7 +58,7 @@ export class EditQuestionUseCase {
      * Create a current item from attachment watched list
      */
     const questionAttachmentList = new QuestionAttachmentList(
-      currentQuestionAttachments
+      currentQuestionAttachments,
     )
 
     /**

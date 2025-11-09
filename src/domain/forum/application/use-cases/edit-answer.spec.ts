@@ -15,18 +15,18 @@ describe('Edit Answer', () => {
     inMemoryAnswerAttachmentsRepository =
       new InMemoryAnswerAttachmentsRepository()
     inMemoryAnswersRepository = new InMemoryAnswersRepository(
-      inMemoryAnswerAttachmentsRepository
+      inMemoryAnswerAttachmentsRepository,
     )
     sut = new EditAnswerUseCase(
       inMemoryAnswersRepository,
-      inMemoryAnswerAttachmentsRepository
+      inMemoryAnswerAttachmentsRepository,
     )
   })
 
   it('should be able a edit answer', async () => {
     const newAnswer = makeAnswer(
       { authorId: new UniqueEntityId('author-id') },
-      new UniqueEntityId('answer-id')
+      new UniqueEntityId('answer-id'),
     )
 
     await inMemoryAnswersRepository.create(newAnswer)
@@ -38,7 +38,7 @@ describe('Edit Answer', () => {
       makeAnswerAttachment({
         answerId: newAnswer.id,
         attachmentId: new UniqueEntityId('2'),
-      })
+      }),
     )
 
     await sut.execute({
@@ -52,20 +52,20 @@ describe('Edit Answer', () => {
       content: 'new content',
     })
     expect(
-      inMemoryAnswersRepository.items[0].attachments.currentItems
+      inMemoryAnswersRepository.items[0].attachments.currentItems,
     ).toHaveLength(2)
     expect(inMemoryAnswersRepository.items[0].attachments.currentItems).toEqual(
       [
         expect.objectContaining({ attachmentId: new UniqueEntityId('1') }),
         expect.objectContaining({ attachmentId: new UniqueEntityId('3') }),
-      ]
+      ],
     )
   })
 
   it('should sync new and removed attachment when editing a answer', async () => {
     const newAnswer = makeAnswer(
       { authorId: new UniqueEntityId('author-id') },
-      new UniqueEntityId('answer-id')
+      new UniqueEntityId('answer-id'),
     )
 
     await inMemoryAnswersRepository.create(newAnswer)
@@ -77,7 +77,7 @@ describe('Edit Answer', () => {
       makeAnswerAttachment({
         answerId: newAnswer.id,
         attachmentId: new UniqueEntityId('2'),
-      })
+      }),
     )
 
     await sut.execute({
@@ -92,14 +92,14 @@ describe('Edit Answer', () => {
       expect.arrayContaining([
         expect.objectContaining({ attachmentId: new UniqueEntityId('1') }),
         expect.objectContaining({ attachmentId: new UniqueEntityId('3') }),
-      ])
+      ]),
     )
   })
 
   it('should not be able to edit a answer from another user', async () => {
     const newAnswer = makeAnswer(
       { authorId: new UniqueEntityId('author-id') },
-      new UniqueEntityId('answer-id')
+      new UniqueEntityId('answer-id'),
     )
 
     await inMemoryAnswersRepository.create(newAnswer)

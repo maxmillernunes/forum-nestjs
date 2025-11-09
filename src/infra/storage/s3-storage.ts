@@ -36,7 +36,7 @@ export class S3Storage implements Uploader {
         Key: uniqueFileName,
         Body: body,
         ContentType: fileType,
-      })
+      }),
     )
 
     return {

@@ -9,7 +9,7 @@ export interface CommentProps {
 }
 
 export abstract class Comment<
-  Props extends CommentProps
+  Props extends CommentProps,
 > extends AggregateRoot<Props> {
   get authorId() {
     return this.props.authorId

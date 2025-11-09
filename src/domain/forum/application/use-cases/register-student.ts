@@ -22,7 +22,7 @@ type RegisterStudentUseCaseResponse = Either<
 export class RegisterStudentUseCase {
   constructor(
     private studentsRepository: StudentsRepository,
-    private hashGenerator: HashGenerator
+    private hashGenerator: HashGenerator,
   ) {}
 
   async execute({

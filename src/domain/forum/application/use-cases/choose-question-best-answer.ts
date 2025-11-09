@@ -22,7 +22,7 @@ type ChooseQuestionBestAnswerResponse = Either<
 export class ChooseQuestionBestAnswerUseCase {
   constructor(
     private questionsRepository: QuestionsRepository,
-    private answersRepository: AnswersRepository
+    private answersRepository: AnswersRepository,
   ) {}
 
   async execute({
@@ -36,7 +36,7 @@ export class ChooseQuestionBestAnswerUseCase {
     }
 
     const question = await this.questionsRepository.findById(
-      answer.questionId.toString()
+      answer.questionId.toString(),
     )
 
     if (!question) {

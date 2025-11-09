@@ -13,15 +13,15 @@ export class PrismaAnswerAttachmentsMapper {
         attachmentId: new UniqueEntityId(raw.id),
         answerId: new UniqueEntityId(raw.answerId),
       },
-      new UniqueEntityId(raw.id)
+      new UniqueEntityId(raw.id),
     )
   }
 
   static toPrismaUpdateMany(
-    attachments: AnswerAttachment[]
+    attachments: AnswerAttachment[],
   ): Prisma.AttachmentUpdateManyArgs {
     const attachmentIds = attachments.map((attachment) =>
-      attachment.attachmentId.toString()
+      attachment.attachmentId.toString(),
     )
 
     return {

@@ -10,7 +10,7 @@ import { PrismaAttachmentMapper } from '@/infra/database/prisma/mappers/prisma-a
 
 export function makeAttachment(
   override: Partial<AttachmentProps> = {},
-  id?: UniqueEntityId
+  id?: UniqueEntityId,
 ) {
   const attachment = Attachment.create(
     {
@@ -18,7 +18,7 @@ export function makeAttachment(
       url: faker.internet.url(),
       ...override,
     },
-    id
+    id,
   )
 
   return attachment
@@ -29,7 +29,7 @@ export class AttachmentFactory {
   constructor(private prisma: PrismaService) {}
 
   async makePrismaAttachment(
-    data: Partial<AttachmentProps> = {}
+    data: Partial<AttachmentProps> = {},
   ): Promise<Attachment> {
     const attachment = makeAttachment(data)
 

@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   HttpCode,
-  NotFoundException,
   Param,
   Put,
   UnauthorizedException,
@@ -12,8 +11,6 @@ import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
 import { EditQuestionUseCase } from '@/domain/forum/application/use-cases/edit-question'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import type { UserPayload } from '@/infra/auth/jwt.strategy'
-import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error'
-import { NotAllowedError } from '@/core/errors/errors/not-allowed-error'
 
 const editQuestionBodySchema = z.object({
   title: z.string(),
@@ -34,7 +31,7 @@ export class EditQuestionController {
   async handle(
     @Param('id') questionId: string,
     @Body(bodyValidationPipe) body: EditQuestionBodySchema,
-    @CurrentUser() user: UserPayload
+    @CurrentUser() user: UserPayload,
   ) {
     const userId = user.sub
     const { content, title, attachments } = body

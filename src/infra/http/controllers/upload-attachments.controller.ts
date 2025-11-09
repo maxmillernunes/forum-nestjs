@@ -16,7 +16,7 @@ import { FileInterceptor } from '@nestjs/platform-express'
 @Controller('/attachments')
 export class UploadAttachmentsController {
   constructor(
-    private uploadAndCreateAttachment: UploadAndCreateAttachmentUseCase
+    private uploadAndCreateAttachment: UploadAndCreateAttachmentUseCase,
   ) {}
 
   @Post()
@@ -29,9 +29,9 @@ export class UploadAttachmentsController {
           new MaxFileSizeValidator({ maxSize: 1024 * 1024 * 2 }), // 2mb
           new FileTypeValidator({ fileType: '.(png|jpg|jpeg|pdf)' }),
         ],
-      })
+      }),
     )
-    file: Express.Multer.File
+    file: Express.Multer.File,
   ) {
     const result = await this.uploadAndCreateAttachment.execute({
       fileName: file.originalname,

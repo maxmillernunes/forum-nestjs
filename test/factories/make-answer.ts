@@ -10,7 +10,7 @@ import { PrismaAnswersMapper } from '@/infra/database/prisma/mappers/prisma-answ
 
 export function makeAnswer(
   override: Partial<AnswerProps> = {},
-  id?: UniqueEntityId
+  id?: UniqueEntityId,
 ) {
   const answer = Answer.create(
     {
@@ -19,7 +19,7 @@ export function makeAnswer(
       content: faker.lorem.text(),
       ...override,
     },
-    id
+    id,
   )
 
   return answer

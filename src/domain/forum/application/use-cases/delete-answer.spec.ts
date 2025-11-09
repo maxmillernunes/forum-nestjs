@@ -15,7 +15,7 @@ describe('Delete answer', () => {
     inMemoryAnswerAttachmentsRepository =
       new InMemoryAnswerAttachmentsRepository()
     inMemoryAnswersRepository = new InMemoryAnswersRepository(
-      inMemoryAnswerAttachmentsRepository
+      inMemoryAnswerAttachmentsRepository,
     )
     sut = new DeleteAnswerUseCase(inMemoryAnswersRepository)
   })
@@ -23,7 +23,7 @@ describe('Delete answer', () => {
   it('should be able to delete a answer', async () => {
     const newAnswer = makeAnswer(
       { authorId: new UniqueEntityId('author-id') },
-      new UniqueEntityId('answer-id')
+      new UniqueEntityId('answer-id'),
     )
 
     await inMemoryAnswersRepository.create(newAnswer)
@@ -35,7 +35,7 @@ describe('Delete answer', () => {
       makeAnswerAttachment({
         answerId: newAnswer.id,
         attachmentId: new UniqueEntityId('2'),
-      })
+      }),
     )
 
     await sut.execute({ authorId: 'author-id', answerId: 'answer-id' })
@@ -47,7 +47,7 @@ describe('Delete answer', () => {
   it('should not be able to delete a answer from another user', async () => {
     const newAnswer = makeAnswer(
       { authorId: new UniqueEntityId('author-id') },
-      new UniqueEntityId('answer-id')
+      new UniqueEntityId('answer-id'),
     )
 
     await inMemoryAnswersRepository.create(newAnswer)

@@ -1,13 +1,22 @@
 import eslint from '@eslint/js'
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 import globals from 'globals'
 import tseslint from 'typescript-eslint'
 
 export default [
   {
-    ignores: ['dist/**', 'node_modules/**', 'eslint.config.mjs'],
+    ignores: [
+      'dist/**',
+      'node_modules/**',
+      'eslint.config.mjs',
+      'test/**',
+      '**/*spec.ts',
+    ],
   },
+
   eslint.configs.recommended,
   ...tseslint.configs.recommendedTypeChecked,
+  eslintPluginPrettierRecommended,
   {
     languageOptions: {
       globals: {
@@ -23,18 +32,26 @@ export default [
   },
   {
     rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-floating-promises': 'off',
       '@typescript-eslint/no-unsafe-argument': 'off',
       '@typescript-eslint/require-await': 'off',
       '@typescript-eslint/no-unsafe-assignment': 'warn',
 
-      // --- Style ---
-      semi: ['error', 'never'],
-      quotes: ['error', 'single'],
-      indent: ['error', 2],
-      'object-curly-spacing': ['error', 'always'],
-      'comma-dangle': ['error', 'always-multiline'],
+      // --- Prettier formatting ---
+      'prettier/prettier': [
+        'error',
+        {
+          singleQuote: true,
+          semi: false,
+          trailingComma: 'all',
+          printWidth: 80,
+          tabWidth: 2,
+          useTabs: false,
+          bracketSpacing: true,
+          arrowParens: 'always',
+        },
+      ],
     },
   },
 ]
