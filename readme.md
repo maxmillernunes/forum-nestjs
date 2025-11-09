@@ -62,7 +62,12 @@ docker compose up --build -d
 
 ## Executar Testes
 
-- Caso esteja executando via `docker`, altera a seguinte env  `POSTGRES_HOST=postgres` para `POSTGRES_HOST=localhost`.
+- Quando for executar os teste E2E, crie um arquivo chamado .env.test e dentro adicione o seguinte:
+```base
+# Database
+POSTGRES_HOST=localhost
+```
+- Isso irar fazer um `Override` dessa varável ambiente no momento da execução. Caso queira, adicionar mais outras envs.
 
 - Os testes Unitários (Unit)
   ```bash
@@ -239,6 +244,13 @@ docker compose up --build -d
 ```
 
 ## Run Tests
+
+- When running E2E tests, create a file called .env.test and add the following inside:
+```base
+# Database
+POSTGRES_HOST=localhost
+```
+- This will override this environment variable at runtime. You can add other environments if you wish.
 
 Unit Tests
   ```bash

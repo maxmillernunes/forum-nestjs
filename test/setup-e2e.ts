@@ -5,7 +5,7 @@ import { execSync } from 'node:child_process'
 
 // Override env variables for test environment
 config({ path: '.env', override: true })
-// config({ path: '.env.test', override: true }) -> use when has any variable to override
+config({ path: '.env.test', override: true }) // -> use when has any variable to override
 
 const prisma = new PrismaClient()
 
