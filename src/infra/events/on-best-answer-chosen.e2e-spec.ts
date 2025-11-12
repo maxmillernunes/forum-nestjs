@@ -8,8 +8,10 @@ import { DatabaseModule } from '@/infra/database/database.module'
 import { StudentFactory } from 'test/factories/make-student'
 import { QuestionFactory } from 'test/factories/make-question'
 import { AnswerFactory } from 'test/factories/make-answer'
+import { waitFor } from 'test/utils/wait-for'
+import { DomainEvents } from '@/core/events/domain-events'
 
-describe('Choose question best answer (E2E)', () => {
+describe('On Best Answer Chosen (E2E)', () => {
   let app: INestApplication
   let prisma: PrismaService
   let jwt: JwtService
@@ -30,10 +32,12 @@ describe('Choose question best answer (E2E)', () => {
     questionFactory = moduleRef.get(QuestionFactory)
     answerFactory = moduleRef.get(AnswerFactory)
 
+    DomainEvents.shouldRun = true
+
     await app.init()
   })
 
-  test('[PATCH] /answers/:id/choose-as-best', async () => {
+  it('should send a notification when the best answer is chosen', async () => {
     const user = await studentFactory.makePrismaStudent()
 
     const token = jwt.sign({ sub: user.id.toString() })
@@ -49,19 +53,19 @@ describe('Choose question best answer (E2E)', () => {
 
     const answerId = answer.id.toString()
 
-    const response = await request(app.getHttpServer())
+    await request(app.getHttpServer())
       .patch(`/answers/${answerId}/choose-as-best`)
       .set('Authorization', `Bearer ${token}`)
       .send()
 
-    expect(response.status).toBe(204)
+    await waitFor(async () => {
+      const notificationOnDatabase = await prisma.notification.findFirst({
+        where: {
+          recipientId: user.id.toString(),
+        },
+      })
 
-    const answerOnDatabase = await prisma.question.findUnique({
-      where: {
-        id: question.id.toString(),
-      },
+      expect(notificationOnDatabase).toBeTruthy()
     })
-
-    expect(answerOnDatabase?.bestAnswerId).toBeTruthy()
   })
 })
