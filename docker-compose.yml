@@ -9,6 +9,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     restart: unless-stopped
     networks:
       - app-nest-clean
@@ -32,8 +34,26 @@ services:
     networks:
       - app-nest-clean
 
+  redis:
+    container_name: nest-clean-cache
+    image: redis:8-alpine
+    restart: unless-stopped
+    ports:
+      - ${REDIS_PORT}:${REDIS_PORT}
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    networks:
+      - app-nest-clean
+
 volumes:
   pg_data:
+  redis_data:
 
 networks:
   app-nest-clean:
