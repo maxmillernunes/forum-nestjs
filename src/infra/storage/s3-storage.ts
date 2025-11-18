@@ -13,7 +13,6 @@ export class S3Storage implements Uploader {
 
   constructor(private envService: EnvService) {
     this.client = new S3Client({
-      endpoint: this.envService.get('AWS_S3_ENDPOINT'),
       region: this.envService.get('AWS_REGION'),
       credentials: {
         accessKeyId: this.envService.get('AWS_ACCESS_KEY_ID'),
